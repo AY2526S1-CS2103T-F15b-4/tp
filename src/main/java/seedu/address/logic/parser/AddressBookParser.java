@@ -72,7 +72,6 @@ public class AddressBookParser {
         }
 
         switch (commandWord) {
-
         // The use of magic literal here signals a legacy feature.
         case "add", AddPersonCommand.COMMAND_WORD:
             return new AddPersonCommandParser().parse(arguments);
@@ -107,11 +106,6 @@ public class AddressBookParser {
         case FilterClubCommand.COMMAND_WORD:
             return new FilterClubCommandParser().parse(arguments);
 
-        case FilterPersonCommand.COMMAND_WORD:
-            return new FilterPersonCommandParser().parse(arguments);
-
-        case ListContactsCommand.COMMAND_WORD:
-            return new ListContactsCommand();
         case ListAllCommand.COMMAND_WORD:
             return new ListAllCommand();
 

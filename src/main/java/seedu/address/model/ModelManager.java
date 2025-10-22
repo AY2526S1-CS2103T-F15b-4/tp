@@ -36,6 +36,8 @@ public class ModelManager implements Model {
     private Club deletedClub;
     private Person lastPersonToEdit;
     private Person lastEditedPerson;
+    private Club lastClubToEdit;
+    private Club lastEditedClub;
     private FilteredList<Person> backupFilteredPersons;
     private FilteredList<Club> backupFilteredClubs;
     private FilteredList<Membership> backupFilteredMemberships;
@@ -217,19 +219,28 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    public void setClub(Club target, Club editedClub) {
+        requireAllNonNull(target, editedClub);
+
+        lastClubToEdit = target;
+        lastEditedClub = editedClub;
+
+        addressBook.setClub(target, editedClub);
+    }
+
     @Override
     public void removeLastAddedPerson() {
         deletePerson(lastAddedPerson);
     }
 
     @Override
-    public void restorePerson() {
-        addPerson(deletedPerson);
+    public void removeLastAddedClub() {
+        deleteClub(lastAddedClub);
     }
 
     @Override
-    public void removeLastAddedClub() {
-        deleteClub(lastAddedClub);
+    public void restorePerson() {
+        addPerson(deletedPerson);
     }
 
     @Override
@@ -240,10 +251,11 @@ public class ModelManager implements Model {
     @Override
     public void revertEditedPerson() {
         setPerson(lastEditedPerson, lastPersonToEdit);
-    public void setClub(Club target, Club editedClub) {
-        requireAllNonNull(target, editedClub);
+    }
 
-        addressBook.setClub(target, editedClub);
+    @Override
+    public void revertEditedClub() {
+        setClub(lastEditedClub, lastClubToEdit);
     }
 
     //=========== Filtered Person List Accessors =============================================================

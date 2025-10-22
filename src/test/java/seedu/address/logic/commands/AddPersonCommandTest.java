@@ -178,6 +178,14 @@ public class AddPersonCommandTest {
 
         @Override
         public void revertEditedPerson() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void revertEditedClub() {
+            throw new AssertionError("This method should not be called.");
+        }
+
         public void setClub(Club target, Club editedPerson) {
             throw new AssertionError("This method should not be called.");
         }

@@ -116,21 +116,24 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
-    void removeLastAddedPerson();
-
-    void restorePerson();
-
-    void removeLastAddedClub();
-
-    void restoreClub();
-
-    void revertEditedPerson();
     /**
      * Replaces the given club {@code target} with {@code editedClub}.
      * {@code target} must exist in the address book.
      * The club identity of {@code editedClub} must not be the same as another existing club in the address book.
      */
     void setClub(Club target, Club editedClub);
+
+    void removeLastAddedPerson();
+
+    void removeLastAddedClub();
+
+    void restorePerson();
+
+    void restoreClub();
+
+    void revertEditedPerson();
+
+    void revertEditedClub();
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
