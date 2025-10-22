@@ -137,6 +137,11 @@ public class AddPersonCommandTest {
         }
 
         @Override
+        public void restoreAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean hasPerson(Person person) {
             throw new AssertionError("This method should not be called.");
         }
@@ -152,6 +157,35 @@ public class AddPersonCommandTest {
         }
 
         @Override
+        public void removeLastAddedPerson() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void restorePerson() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void removeLastAddedClub() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void restoreClub() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void revertEditedPerson() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void revertEditedClub() {
+            throw new AssertionError("This method should not be called.");
+        }
+
         public void setClub(Club target, Club editedPerson) {
             throw new AssertionError("This method should not be called.");
         }

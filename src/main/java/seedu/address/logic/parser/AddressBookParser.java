@@ -32,6 +32,7 @@ import seedu.address.logic.commands.ListMembershipCommand;
 import seedu.address.logic.commands.ReactivateMembershipCommand;
 import seedu.address.logic.commands.RemoveFromCommand;
 import seedu.address.logic.commands.RenewMembershipCommand;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -53,8 +54,6 @@ public class AddressBookParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
-        CommandList.addCommand(userInput);
-
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.strip());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
@@ -68,8 +67,11 @@ public class AddressBookParser {
         // Lower level log messages are used sparingly to minimize noise in the code.
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
-        switch (commandWord) {
+        if (!commandWord.equals("undo")) {
+            CommandList.addCommand(userInput);
+        }
 
+        switch (commandWord) {
         // The use of magic literal here signals a legacy feature.
         case "add", AddPersonCommand.COMMAND_WORD:
             return new AddPersonCommandParser().parse(arguments);
@@ -139,6 +141,9 @@ public class AddressBookParser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
+
+        case UndoCommand.COMMAND_WORD:
+            return new UndoCommand();
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
