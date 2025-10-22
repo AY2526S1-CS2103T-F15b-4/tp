@@ -31,18 +31,17 @@ public class Membership {
     private final Person person;
     private final Club club;
     private final LocalDate joinDate;
-    private LocalDate expiryDate;
+    private ObjectProperty<LocalDate> expiryDate = new SimpleObjectProperty<>();
     private List<LocalDate> renewalHistory;
     private ObjectProperty<MembershipStatus> status = new SimpleObjectProperty<>();
 
     /**
      * Constructor with duration specified.
      */
-    public Membership(Person person, Club club, int membershipDurationInMonths) {
-        requireAllNonNull(person, club, membershipDurationInMonths);
+    public Membership(Person person, Club club, int durationInMonths) {
+        requireAllNonNull(person, club, durationInMonths);
 
-        if (membershipDurationInMonths < MINIMUM_MEMBERSHIP_DURATION_IN_MONTHS
-                || membershipDurationInMonths > MAXIMUM_MEMBERSHIP_DURATION_IN_MONTHS) {
+        if (!isValidMembershipDuration(durationInMonths)) {
             throw new IllegalArgumentException("Membership duration must be between "
                     + MINIMUM_MEMBERSHIP_DURATION_IN_MONTHS + " and " + MAXIMUM_MEMBERSHIP_DURATION_IN_MONTHS
                     + " months.");
@@ -51,7 +50,7 @@ public class Membership {
         this.person = person;
         this.club = club;
         this.joinDate = LocalDate.now();
-        this.expiryDate = joinDate.plusMonths(membershipDurationInMonths);
+        this.expiryDate.set(joinDate.plusMonths(durationInMonths));
         this.renewalHistory = new ArrayList<>();
         this.status.set(MembershipStatus.ACTIVE);
     }
@@ -66,7 +65,7 @@ public class Membership {
         this.person = person;
         this.club = club;
         this.joinDate = joinDate;
-        this.expiryDate = expiryDate;
+        this.expiryDate.set(expiryDate);
         this.renewalHistory = renewalHistory;
         this.status.set(status);
     }
@@ -80,9 +79,19 @@ public class Membership {
         this.person = person;
         this.club = club;
         this.joinDate = LocalDate.now();
-        this.expiryDate = joinDate.plusMonths(DEFAULT_DURATION_IN_MONTHS); // Default duration of 12 months
+        this.expiryDate.set(joinDate.plusMonths(DEFAULT_DURATION_IN_MONTHS)); // Default duration of 12 months
         this.renewalHistory = new ArrayList<>();
         this.status.set(MembershipStatus.ACTIVE);
+    }
+
+    private boolean isValidMembershipDuration(int durationInMonths) {
+        return durationInMonths >= MINIMUM_MEMBERSHIP_DURATION_IN_MONTHS
+                && durationInMonths <= MAXIMUM_MEMBERSHIP_DURATION_IN_MONTHS;
+    }
+
+    private boolean isValidRenewalDuration(int durationInMonths) {
+        return durationInMonths >= MINIMUM_RENEWAL_DURATION_IN_MONTHS
+                && durationInMonths <= MAXIMUM_RENEWAL_DURATION_IN_MONTHS;
     }
 
     /**
@@ -91,7 +100,7 @@ public class Membership {
      * @return true if the membership is active, false otherwise.
      */
     public boolean isActive() {
-        return this.status.get() == MembershipStatus.ACTIVE && LocalDate.now().isBefore(expiryDate);
+        return this.status.get() == MembershipStatus.ACTIVE && LocalDate.now().isBefore(expiryDate.get());
     }
 
     /**
@@ -99,7 +108,7 @@ public class Membership {
      * This should be called everytime we start the app.
      */
     public void updateStatus() {
-        if (this.status.get() == MembershipStatus.ACTIVE && LocalDate.now().isAfter(expiryDate)) {
+        if (this.status.get() == MembershipStatus.ACTIVE && LocalDate.now().isAfter(expiryDate.get())) {
             this.status.set(MembershipStatus.EXPIRED);
             logger.info("Membership for " + person.getName() + " has expired.");
         }
@@ -107,27 +116,25 @@ public class Membership {
 
     /**
      * Renews the membership. The behavior depends on the current status.
-     * @param renewalDurationInMonths The number of months to extend the membership by.
+     * @param durationInMonths The number of months to extend the membership by.
      */
-    public void renew(int renewalDurationInMonths) {
-        if (renewalDurationInMonths < MINIMUM_RENEWAL_DURATION_IN_MONTHS
-                || renewalDurationInMonths > MAXIMUM_RENEWAL_DURATION_IN_MONTHS) {
+    public void renew(int durationInMonths) {
+        if (!isValidRenewalDuration(durationInMonths)) {
             throw new IllegalArgumentException("Renewal duration must be between "
                     + MINIMUM_RENEWAL_DURATION_IN_MONTHS + " and " + MAXIMUM_RENEWAL_DURATION_IN_MONTHS
                     + " months.");
         }
 
         if (this.status.get() == MembershipStatus.CANCELLED) {
-            System.out.println("Cannot renew a cancelled membership. Please create a new one.");
-            return;
+            throw new IllegalArgumentException("Cannot renew a cancelled membership. Please create a new one.");
         }
 
         if (this.status.get() == MembershipStatus.EXPIRED) {
             // If expired, start new period from today
-            this.expiryDate = LocalDate.now().plusMonths(renewalDurationInMonths);
+            this.expiryDate.set(LocalDate.now().plusMonths(durationInMonths));
         } else {
             // If active, extend from current expiry date
-            this.expiryDate = this.expiryDate.plusMonths(renewalDurationInMonths);
+            this.expiryDate.set(this.expiryDate.get().plusMonths(durationInMonths));
         }
         this.renewalHistory.add(LocalDate.now());
         this.status.set(MembershipStatus.ACTIVE);
@@ -140,6 +147,33 @@ public class Membership {
     public void cancel() {
         this.status.set(MembershipStatus.CANCELLED);
         logger.info("Membership for " + person.getName() + " has been cancelled.");
+    }
+
+    /**
+     * Reactivates a cancelled membership.
+     * @param durationInMonths The duration in months for the reactivated membership.
+     */
+    public void reactivate(int durationInMonths) {
+        if (this.status.get() != MembershipStatus.CANCELLED) {
+            throw new IllegalArgumentException("Only cancelled memberships can be reactivated.");
+        }
+        if (!isValidMembershipDuration(durationInMonths)) {
+            throw new IllegalArgumentException("Membership duration must be between "
+                    + MINIMUM_MEMBERSHIP_DURATION_IN_MONTHS + " and " + MAXIMUM_MEMBERSHIP_DURATION_IN_MONTHS
+                    + " months.");
+        }
+        this.status.set(MembershipStatus.ACTIVE);
+        if (LocalDate.now().isAfter(expiryDate.get())) {
+            // If previously expired, start new period from today
+            logger.info("Expiry date was in the past, setting new expiry date from today.");
+            this.expiryDate.set(LocalDate.now().plusMonths(durationInMonths));
+        } else {
+            // If not expired, extend from current expiry date
+            logger.info("Expiry date was in the future, extending from current expiry date.");
+            LocalDate newExpiryDate = this.expiryDate.get().plusMonths(durationInMonths);
+            this.expiryDate.set(newExpiryDate);
+        }
+        logger.info("Membership for " + person.getName() + " reactivated. New expiry date: " + this.expiryDate);
     }
 
     // todo: implement isValidLocalDate later
@@ -156,7 +190,7 @@ public class Membership {
     }
 
     public LocalDate getExpiryDate() {
-        return expiryDate;
+        return expiryDate.get();
     }
 
     public List<LocalDate> getRenewalHistory() {
@@ -165,6 +199,10 @@ public class Membership {
 
     public MembershipStatus getStatus() {
         return status.get();
+    }
+
+    public ObjectProperty<LocalDate> expiryDateProperty() {
+        return expiryDate;
     }
 
     public ObjectProperty<MembershipStatus> statusProperty() {
