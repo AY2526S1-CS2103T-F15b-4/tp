@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.field.Address;
 import seedu.address.model.field.Email;
@@ -31,7 +29,7 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final ObservableSet<Membership> memberships;
+    private final Set<Membership> memberships = new HashSet<>();
 
     /**
      * Constructs a {@code Person}.
@@ -57,7 +55,6 @@ public class Person {
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
         this.tags.addAll(tags);
-        this.memberships = FXCollections.observableSet(new HashSet<>());
     }
 
     public Name getName() {
@@ -84,7 +81,7 @@ public class Person {
         return Collections.unmodifiableSet(tags);
     }
 
-    public ObservableSet<Membership> getMemberships() {
+    public Set<Membership> getMemberships() {
         return this.memberships;
     }
 

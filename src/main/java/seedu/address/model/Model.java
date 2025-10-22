@@ -58,6 +58,8 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    void restoreAddressBook();
+
     /**
      * Returns true if a person with the same identity as {@code person} exists in the address book.
      */
@@ -103,6 +105,16 @@ public interface Model {
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
     void setPerson(Person target, Person editedPerson);
+
+    void removeLastAddedPerson();
+
+    void restorePerson();
+
+    void removeLastAddedClub();
+
+    void restoreClub();
+
+    void revertEditedPerson();
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();

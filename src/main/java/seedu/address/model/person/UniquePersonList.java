@@ -40,7 +40,7 @@ public class UniquePersonList implements Iterable<Person> {
         // 1. The membership set itself (for additions/removals)
         // 2. All the individual status properties (for status changes)
         return Stream.concat(
-                Stream.of(person.getMemberships()),
+                person.getMemberships().stream(),
                 Stream.of(membershipStatuses)
         ).toArray(Observable[]::new);
     };

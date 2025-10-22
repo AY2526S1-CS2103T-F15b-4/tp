@@ -44,4 +44,13 @@ public class CommandList {
         }
         return COMMAND_LIST.get(currentCommand);
     }
+
+    /**
+     * Retrieves the most recent command from the history.
+     *
+     * @return The most recent command string.
+     */
+    public static String getLastCommand() {
+        return COMMAND_LIST.get(COMMAND_LIST.size() - 1);
+    }
 }

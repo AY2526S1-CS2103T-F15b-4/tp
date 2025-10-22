@@ -91,6 +91,9 @@ public class AddressBook implements ReadOnlyAddressBook {
         // resetToDummyData();
     }
 
+    public void restoreData(ReadOnlyAddressBook backupAddressBook) {
+    }
+
     // This method is for private testing purposes, do not remove.
     private void resetToDummyData() {
         setPersons(SampleDataUtil.getSampleAddressBook().getPersonList());
@@ -130,8 +133,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Adds a person to the address book.
      * The person must not already exist in the address book.
      */
-    public void addPerson(Person p) {
-        persons.add(p);
+    public void addPerson(Person person) {
+        persons.add(person);
     }
 
     /**

@@ -189,5 +189,4 @@ public class Club {
                 .add("tags", tags)
                 .toString();
     }
-
 }
