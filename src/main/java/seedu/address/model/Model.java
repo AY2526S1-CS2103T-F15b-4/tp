@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -57,6 +58,8 @@ public interface Model {
 
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
+
+    void restoreAddressBook();
 
     /**
      * Returns true if a person with the same identity as {@code person} exists in the address book.
@@ -121,6 +124,18 @@ public interface Model {
      */
     void setClub(Club target, Club editedClub);
 
+    void removeLastAddedPerson();
+
+    void removeLastAddedClub();
+
+    void restorePerson();
+
+    void restoreClub();
+
+    void revertEditedPerson();
+
+    void revertEditedClub();
+
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
 
@@ -130,9 +145,13 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    void sortFilteredPersonList(Comparator<Person> personComparator);
+
     ObservableList<Club> getFilteredClubList();
 
     void updateFilteredClubList(Predicate<Club> predicate);
+
+    void sortFilteredClubList(Comparator<Club> clubComparator);
 
     ObservableList<Membership> getFilteredMembershipList();
 

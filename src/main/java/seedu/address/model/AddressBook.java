@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -92,6 +93,9 @@ public class AddressBook implements ReadOnlyAddressBook {
         // resetToDummyData();
     }
 
+    public void restoreData(ReadOnlyAddressBook backupAddressBook) {
+    }
+
     // This method is for private testing purposes, do not remove.
     private void resetToDummyData() {
         setPersons(SampleDataUtil.getSampleAddressBook().getPersonList());
@@ -131,8 +135,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Adds a person to the address book.
      * The person must not already exist in the address book.
      */
-    public void addPerson(Person p) {
-        persons.add(p);
+    public void addPerson(Person person) {
+        persons.add(person);
     }
 
     /**
@@ -338,6 +342,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         return memberships.asUnmodifiableObservableList();
     }
 
+    public void sortPersonList(Comparator<Person> personComparator) {
+        persons.sort(personComparator);
+    }
+
+    public void sortClubList(Comparator<Club> clubComparator) {
+        clubs.sort(clubComparator);
+    }
 
     @Override
     public boolean equals(Object other) {

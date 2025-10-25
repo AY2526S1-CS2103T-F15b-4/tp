@@ -4,9 +4,12 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
@@ -27,6 +30,18 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private final FilteredList<Club> filteredClubs;
     private final FilteredList<Membership> filteredMemberships;
+
+    private Person lastAddedPerson;
+    private Club lastAddedClub;
+    private Person deletedPerson;
+    private Club deletedClub;
+    private Person lastPersonToEdit;
+    private Person lastEditedPerson;
+    private Club lastClubToEdit;
+    private Club lastEditedClub;
+    private FilteredList<Person> backupFilteredPersons;
+    private FilteredList<Club> backupFilteredClubs;
+    private FilteredList<Membership> backupFilteredMemberships;
 
     /**
      * Initializes a ModelManager with the default values of addressBook and userPrefs.
@@ -99,12 +114,31 @@ public class ModelManager implements Model {
 
     @Override
     public void setAddressBook(ReadOnlyAddressBook addressBook) {
+        ObservableList<Person> copiedPersonList = FXCollections.observableArrayList(
+                this.addressBook.getPersonList());
+        this.backupFilteredPersons = new FilteredList<>(copiedPersonList);
+
+        ObservableList<Club> copiedClubList = FXCollections.observableArrayList(
+                this.addressBook.getClubList());
+        this.backupFilteredClubs = new FilteredList<>(copiedClubList);
+
+        ObservableList<Membership> copiedMembershipList = FXCollections.observableArrayList(
+                this.addressBook.getMembershipList());
+        this.backupFilteredMemberships = new FilteredList<>(copiedMembershipList);
+
         this.addressBook.resetData(addressBook);
     }
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
+    }
+
+    @Override
+    public void restoreAddressBook() {
+        this.addressBook.setPersons(new ArrayList<>(this.backupFilteredPersons));
+        this.addressBook.setClubs(new ArrayList<>(this.backupFilteredClubs));
+        this.addressBook.setMemberships(new ArrayList<>(this.backupFilteredMemberships));
     }
 
     @Override
@@ -127,11 +161,13 @@ public class ModelManager implements Model {
 
     @Override
     public void deletePerson(Person target) {
+        deletedPerson = target;
         addressBook.removePerson(target);
     }
 
     @Override
     public void deleteClub(Club target) {
+        deletedClub = target;
         // delete all memberships related to the club
         for (Membership m : target.getMemberships()) {
             this.deleteMembership(m);
@@ -160,11 +196,13 @@ public class ModelManager implements Model {
 
     @Override
     public void addPerson(Person person) {
+        lastAddedPerson = person;
         addressBook.addPerson(person);
     }
 
     @Override
-    public void addClub(final Club club) {
+    public void addClub(Club club) {
+        lastAddedClub = club;
         addressBook.addClub(club);
     }
 
@@ -177,14 +215,49 @@ public class ModelManager implements Model {
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
+        lastPersonToEdit = target;
+        lastEditedPerson = editedPerson;
+
         addressBook.setPerson(target, editedPerson);
     }
 
-    @Override
     public void setClub(Club target, Club editedClub) {
         requireAllNonNull(target, editedClub);
 
+        lastClubToEdit = target;
+        lastEditedClub = editedClub;
+
         addressBook.setClub(target, editedClub);
+    }
+
+    @Override
+    public void removeLastAddedPerson() {
+        deletePerson(lastAddedPerson);
+    }
+
+    @Override
+    public void removeLastAddedClub() {
+        deleteClub(lastAddedClub);
+    }
+
+    @Override
+    public void restorePerson() {
+        addPerson(deletedPerson);
+    }
+
+    @Override
+    public void restoreClub() {
+        addClub(deletedClub);
+    }
+
+    @Override
+    public void revertEditedPerson() {
+        setPerson(lastEditedPerson, lastPersonToEdit);
+    }
+
+    @Override
+    public void revertEditedClub() {
+        setClub(lastEditedClub, lastClubToEdit);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -204,6 +277,16 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
+    @Override
+    public void sortFilteredPersonList(Comparator<Person> personComparator) {
+        addressBook.sortPersonList(personComparator);
+    }
+
+    @Override
+    public void sortFilteredClubList(Comparator<Club> clubComparator) {
+        addressBook.sortClubList(clubComparator);
+    }
+
     //=========== Filtered Club List Accessors =============================================================
 
     @Override
@@ -216,7 +299,6 @@ public class ModelManager implements Model {
         requireNonNull(predicate);
         filteredClubs.setPredicate(predicate);
     }
-
 
     //=========== Filtered Membership List Accessors =============================================================
 
