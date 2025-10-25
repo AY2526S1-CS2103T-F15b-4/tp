@@ -35,7 +35,7 @@ public class UndoCommand extends Command {
             model.removeLastAddedClub();
             break;
 
-        case "add", AddPersonCommand.COMMAND_WORD:
+        case AddPersonCommand.COMMAND_WORD:
             model.removeLastAddedPerson();
             break;
 
