@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -134,6 +135,10 @@ public class UniquePersonList implements Iterable<Person> {
     @Override
     public Iterator<Person> iterator() {
         return internalList.iterator();
+    }
+
+    public void sort(Comparator<Person> personComparator) {
+        internalList.sort(personComparator);
     }
 
     @Override

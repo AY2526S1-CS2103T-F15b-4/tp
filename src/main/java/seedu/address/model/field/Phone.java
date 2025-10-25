@@ -14,7 +14,7 @@ import seedu.address.model.field.validator.PhoneValidator;
  * </p>
  * Guarantees: immutable; valid if non-empty.
  */
-public class Phone {
+public class Phone implements Comparable<Phone> {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Phone numbers should only contain numbers or spaces, "
@@ -75,5 +75,11 @@ public class Phone {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
+    }
+
+    @Override
+    public int compareTo(Phone phone) {
+        return Integer.getInteger(this.value)
+                .compareTo(Integer.getInteger(phone.value));
     }
 }
