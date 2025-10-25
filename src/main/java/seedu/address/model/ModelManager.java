@@ -69,6 +69,10 @@ public class ModelManager implements Model {
         this.filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         this.filteredClubs = new FilteredList<>(this.addressBook.getClubList());
         this.filteredMemberships = new FilteredList<>(this.addressBook.getMembershipList());
+
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredClubList(PREDICATE_SHOW_ALL_CLUBS);
+        updateFilteredMembershipList(PREDICATE_SHOW_ALL_MEMBERSHIP);
     }
 
     //=========== UserPrefs ==================================================================================
@@ -194,20 +198,17 @@ public class ModelManager implements Model {
     public void addPerson(Person person) {
         lastAddedPerson = person;
         addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
     @Override
     public void addClub(Club club) {
         lastAddedClub = club;
         addressBook.addClub(club);
-        updateFilteredClubList(PREDICATE_SHOW_ALL_CLUBS);
     }
 
     @Override
     public void addMembership(Membership membership) {
         addressBook.addMembership(membership);
-        updateFilteredMembershipList(PREDICATE_SHOW_ALL_MEMBERSHIP);
     }
 
     @Override

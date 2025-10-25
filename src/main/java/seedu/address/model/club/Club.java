@@ -14,7 +14,9 @@ import seedu.address.model.field.Address;
 import seedu.address.model.field.Email;
 import seedu.address.model.field.Name;
 import seedu.address.model.field.Phone;
+import seedu.address.model.field.Searchable;
 import seedu.address.model.membership.Membership;
+import seedu.address.model.membership.MembershipStatus;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 
@@ -22,7 +24,7 @@ import seedu.address.model.tag.Tag;
  * Represents a Club in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Club {
+public class Club implements Searchable {
 
     // Identity fields
     private final Name name;
@@ -57,6 +59,10 @@ public class Club {
         this.phone = (phone == null) ? new Phone("") : phone;
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
+
+        assert tags.size() <= 5;
+        assert tags.stream().allMatch(tag -> tag.tagName.length() <= 20);
+
         this.tags.addAll(tags);
     }
 
@@ -105,6 +111,10 @@ public class Club {
         return memberships.add(membership);
     }
 
+    public boolean phoneHasNonNumericNonSpaceCharacter() {
+        return getPhone().containsNonNumericNonSpaceCharacter();
+    }
+
     /**
      * Adds a person as a member of the club.
      *
@@ -151,8 +161,21 @@ public class Club {
         // Also remember to delete membership from ModelManager
     }
 
+    /**
+     * Returns the observable set of memberships for this club including all statuses
+     */
     public ObservableSet<Membership> getMemberships() {
         return this.memberships;
+    }
+
+    /**
+     * Returns the number of members in this club including pending cancellation membership
+     * and exclude cancelled membership.
+     */
+    public int getMemberCount() {
+        return (int) memberships.stream()
+                .filter(membership -> membership.getStatus() != MembershipStatus.CANCELLED)
+                .count();
     }
 
     /**

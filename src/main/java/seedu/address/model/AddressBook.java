@@ -162,7 +162,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                     oldM.getClub(),
                     oldM.getJoinDate(),
                     oldM.getExpiryDate(),
-                    new ArrayList<>(oldM.getRenewalHistory()),
+                    new ArrayList<>(oldM.getMembershipEventHistory()),
                     oldM.getStatus()
             );
 
@@ -205,7 +205,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                     editedClub,
                     oldM.getJoinDate(),
                     oldM.getExpiryDate(),
-                    new ArrayList<>(oldM.getRenewalHistory()),
+                    new ArrayList<>(oldM.getMembershipEventHistory()),
                     oldM.getStatus()
             );
 

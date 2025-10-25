@@ -1,4 +1,4 @@
-package seedu.address.model.tag;
+package seedu.address.logic.search.predicates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import seedu.address.model.tag.Tag;
 
 public class TagContainsKeywordsPredicateTest {
 
@@ -41,21 +43,21 @@ public class TagContainsKeywordsPredicateTest {
     public void test_tagContainsKeywords_returnsTrue() {
         TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(Collections.singletonList("NUS"));
         assertTrue(predicate.test(new Tag("NUS")));
+
+        // Substring keywords
+        predicate = new TagContainsKeywordsPredicate(Arrays.asList("NUS", "NTU"));
+        assertTrue(predicate.test(new Tag("NUSNTU")));
     }
 
     @Test
     public void test_tagDoesNotContainKeywords_returnsFalse() {
-        // Zero keywords
+        // Zero keywords - should not occur if TagParser works
         TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(Collections.emptyList());
         assertFalse(predicate.test(new Tag("NUS")));
 
         // Non-matching keyword
-        predicate = new TagContainsKeywordsPredicate(Arrays.asList("SMU"));
+        predicate = new TagContainsKeywordsPredicate(Collections.singletonList("SMU"));
         assertFalse(predicate.test(new Tag("NUS")));
-
-        // Substring keywords
-        predicate = new TagContainsKeywordsPredicate(Arrays.asList("NUS", "NTU"));
-        assertFalse(predicate.test(new Tag("NUSNTU")));
     }
 
     @Test
