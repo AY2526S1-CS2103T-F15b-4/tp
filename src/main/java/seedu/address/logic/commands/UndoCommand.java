@@ -51,12 +51,12 @@ public class UndoCommand extends Command {
             model.restorePerson();
             break;
 
-        case EditPersonCommand.COMMAND_WORD:
-            model.revertEditedPerson();
-            break;
-
         case EditClubCommand.COMMAND_WORD:
             model.revertEditedClub();
+            break;
+
+        case EditPersonCommand.COMMAND_WORD:
+            model.revertEditedPerson();
             break;
 
         case FindClubCommand.COMMAND_WORD, FilterClubCommand.COMMAND_WORD:

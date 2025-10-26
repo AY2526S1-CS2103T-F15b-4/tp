@@ -166,6 +166,7 @@ public class ModelManager implements Model {
 
     @Override
     public void deleteClub(Club target) {
+        deletedClub = target;
         // delete all memberships related to the club
         for (Membership m : target.getMemberships()) {
             this.deleteMembership(m);
@@ -223,7 +224,6 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
-    @Override
     public void setClub(Club target, Club editedClub) {
         requireAllNonNull(target, editedClub);
 
@@ -292,7 +292,6 @@ public class ModelManager implements Model {
         requireNonNull(predicate);
         filteredClubs.setPredicate(predicate);
     }
-
 
     //=========== Filtered Membership List Accessors =============================================================
 

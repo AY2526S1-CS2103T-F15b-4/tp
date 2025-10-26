@@ -125,9 +125,9 @@ public interface Model {
 
     void removeLastAddedPerson();
 
-    void restorePerson();
-
     void removeLastAddedClub();
+
+    void restorePerson();
 
     void restoreClub();
 
