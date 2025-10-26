@@ -300,6 +300,7 @@ public class ModelManager implements Model {
         filteredClubs.setPredicate(predicate);
     }
 
+
     //=========== Filtered Membership List Accessors =============================================================
 
     @Override

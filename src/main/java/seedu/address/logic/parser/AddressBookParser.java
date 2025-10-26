@@ -74,6 +74,7 @@ public class AddressBookParser {
         }
 
         switch (commandWord) {
+
         // The use of magic literal here signals a legacy feature.
         case "add", AddPersonCommand.COMMAND_WORD:
             return new AddPersonCommandParser().parse(arguments);

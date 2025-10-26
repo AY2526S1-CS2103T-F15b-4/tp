@@ -10,7 +10,6 @@ import static seedu.address.testutil.TypicalClubs.ARCHERY;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -143,11 +142,6 @@ public final class AddClubCommandTest {
         }
 
         @Override
-        public void restoreAddressBook() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public boolean hasPerson(Person person) {
             throw new AssertionError("This method should not be called.");
         }
@@ -163,33 +157,38 @@ public final class AddClubCommandTest {
         }
 
         @Override
-        public void removeLastAddedPerson() {
-            throw new AssertionError("This method should not be called.");
+        public void restoreAddressBook() {
+
         }
 
         @Override
         public void restorePerson() {
-            throw new AssertionError("This method should not be called.");
-        }
 
-        @Override
-        public void removeLastAddedClub() {
-            throw new AssertionError("This method should not be called.");
         }
 
         @Override
         public void restoreClub() {
-            throw new AssertionError("This method should not be called.");
+
+        }
+
+        @Override
+        public void removeLastAddedPerson() {
+
+        }
+
+        @Override
+        public void removeLastAddedClub() {
+
         }
 
         @Override
         public void revertEditedPerson() {
-            throw new AssertionError("This method should not be called.");
+
         }
 
         @Override
         public void revertEditedClub() {
-            throw new AssertionError("This method should not be called.");
+
         }
 
         @Override
@@ -199,11 +198,6 @@ public final class AddClubCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void sortFilteredPersonList(Comparator<Person> personComparator) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -254,11 +248,6 @@ public final class AddClubCommandTest {
 
         @Override
         public void updateFilteredClubList(Predicate<Club> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void sortFilteredClubList(Comparator<Club> clubComparator) {
             throw new AssertionError("This method should not be called.");
         }
 
