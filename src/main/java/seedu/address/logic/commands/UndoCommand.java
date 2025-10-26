@@ -72,6 +72,14 @@ public class UndoCommand extends Command {
             model.updateFilteredClubList(PREDICATE_SHOW_ALL_CLUBS);
             break;
 
+        case SortClubCommand.COMMAND_WORD:
+            model.undoSortFilteredClubList();
+            break;
+
+        case SortPersonCommand.COMMAND_WORD:
+            model.undoSortFilteredPersonList();
+            break;
+
         default:
             return new CommandResult("");
         }

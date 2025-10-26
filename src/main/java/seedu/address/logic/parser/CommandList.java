@@ -27,10 +27,14 @@ public class CommandList {
      * @return The previous command string.
      */
     public static String getPrevCommand() {
-        if (currentCommand > 0) {
-            currentCommand--;
+        try {
+            if (currentCommand > 0) {
+                currentCommand--;
+            }
+            return COMMAND_LIST.get(currentCommand);
+        } catch (IndexOutOfBoundsException e) {
+            return "";
         }
-        return COMMAND_LIST.get(currentCommand);
     }
 
     /**
@@ -39,10 +43,14 @@ public class CommandList {
      * @return The next command string.
      */
     public static String getNextCommand() {
-        if (currentCommand < COMMAND_LIST.size() - 1) {
-            currentCommand++;
+        try {
+            if (currentCommand < COMMAND_LIST.size() - 1) {
+                currentCommand++;
+            }
+            return COMMAND_LIST.get(currentCommand);
+        } catch (IndexOutOfBoundsException e) {
+            return "";
         }
-        return COMMAND_LIST.get(currentCommand);
     }
 
     /**
@@ -51,6 +59,10 @@ public class CommandList {
      * @return The most recent command string.
      */
     public static String getLastCommand() {
-        return COMMAND_LIST.get(COMMAND_LIST.size() - 1);
+        try {
+            return COMMAND_LIST.get(COMMAND_LIST.size() - 1);
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        }
     }
 }

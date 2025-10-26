@@ -20,7 +20,6 @@ public class SortPersonCommandParser implements Parser<SortPersonCommand> {
         String trimmedArgs = args.trim();
 
         if (trimmedArgs.isEmpty()) {
-
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortPersonCommand.MESSAGE_USAGE));
         }
@@ -45,6 +44,7 @@ public class SortPersonCommandParser implements Parser<SortPersonCommand> {
         case "p/" -> p -> p.getPhone().toString();
         case "e/" -> p -> p.getEmail().toString();
         case "a/" -> p -> p.getAddress().toString();
+        case "d/" -> p -> p.getDateAdded().toString();
         default -> p -> "";
         };
     }

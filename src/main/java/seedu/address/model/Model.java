@@ -59,8 +59,6 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
-    void restoreAddressBook();
-
     /**
      * Returns true if a person with the same identity as {@code person} exists in the address book.
      */
@@ -124,9 +122,13 @@ public interface Model {
      */
     void setClub(Club target, Club editedClub);
 
+    //=========== Undo Commands =============================================================
+
     void removeLastAddedPerson();
 
     void removeLastAddedClub();
+
+    void restoreAddressBook();
 
     void restorePerson();
 
@@ -135,6 +137,8 @@ public interface Model {
     void revertEditedPerson();
 
     void revertEditedClub();
+
+    //=========== Filtered Person List Accessors =============================================================
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
@@ -147,11 +151,19 @@ public interface Model {
 
     void sortFilteredPersonList(Comparator<Person> personComparator);
 
+    void undoSortFilteredPersonList();
+
+    //=========== Filtered Club List Accessors =============================================================
+
     ObservableList<Club> getFilteredClubList();
 
     void updateFilteredClubList(Predicate<Club> predicate);
 
     void sortFilteredClubList(Comparator<Club> clubComparator);
+
+    void undoSortFilteredClubList();
+
+    //=========== Filtered Membership List Accessors =============================================================
 
     ObservableList<Membership> getFilteredMembershipList();
 

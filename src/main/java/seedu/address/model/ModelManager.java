@@ -135,13 +135,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void restoreAddressBook() {
-        this.addressBook.setPersons(new ArrayList<>(this.backupFilteredPersons));
-        this.addressBook.setClubs(new ArrayList<>(this.backupFilteredClubs));
-        this.addressBook.setMemberships(new ArrayList<>(this.backupFilteredMemberships));
-    }
-
-    @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
         return addressBook.hasPerson(person);
@@ -172,6 +165,7 @@ public class ModelManager implements Model {
         for (Membership m : target.getMemberships()) {
             this.deleteMembership(m);
         }
+        deletedClub = target;
         addressBook.removeClub(target);
     }
 
@@ -198,17 +192,20 @@ public class ModelManager implements Model {
     public void addPerson(Person person) {
         lastAddedPerson = person;
         addressBook.addPerson(person);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
     @Override
     public void addClub(Club club) {
         lastAddedClub = club;
         addressBook.addClub(club);
+        updateFilteredClubList(PREDICATE_SHOW_ALL_CLUBS);
     }
 
     @Override
     public void addMembership(Membership membership) {
         addressBook.addMembership(membership);
+        updateFilteredMembershipList(PREDICATE_SHOW_ALL_MEMBERSHIP);
     }
 
     @Override
@@ -230,6 +227,8 @@ public class ModelManager implements Model {
         addressBook.setClub(target, editedClub);
     }
 
+    //=========== Undo Commands =============================================================
+
     @Override
     public void removeLastAddedPerson() {
         deletePerson(lastAddedPerson);
@@ -238,6 +237,13 @@ public class ModelManager implements Model {
     @Override
     public void removeLastAddedClub() {
         deleteClub(lastAddedClub);
+    }
+
+    @Override
+    public void restoreAddressBook() {
+        this.addressBook.setPersons(new ArrayList<>(this.backupFilteredPersons));
+        this.addressBook.setClubs(new ArrayList<>(this.backupFilteredClubs));
+        this.addressBook.setMemberships(new ArrayList<>(this.backupFilteredMemberships));
     }
 
     @Override
@@ -283,8 +289,8 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void sortFilteredClubList(Comparator<Club> clubComparator) {
-        addressBook.sortClubList(clubComparator);
+    public void undoSortFilteredPersonList() {
+        sortFilteredPersonList(Comparator.comparing(Person::getDateAdded));
     }
 
     //=========== Filtered Club List Accessors =============================================================
@@ -300,6 +306,15 @@ public class ModelManager implements Model {
         filteredClubs.setPredicate(predicate);
     }
 
+    @Override
+    public void sortFilteredClubList(Comparator<Club> clubComparator) {
+        addressBook.sortClubList(clubComparator);
+    }
+
+    @Override
+    public void undoSortFilteredClubList() {
+        sortFilteredClubList(Comparator.comparing(Club::getDateAdded));
+    }
 
     //=========== Filtered Membership List Accessors =============================================================
 

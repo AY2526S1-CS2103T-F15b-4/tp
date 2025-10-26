@@ -2,6 +2,7 @@ package seedu.address.model.club;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -30,9 +31,10 @@ public class Club implements Searchable {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final Address address;
 
     // Data fields
-    private final Address address;
+    private final LocalDateTime dateAdded;
     private final Set<Tag> tags = new HashSet<>();
     private final ObservableSet<Membership> memberships = FXCollections.observableSet(new HashSet<>());
 
@@ -59,10 +61,9 @@ public class Club implements Searchable {
         this.phone = (phone == null) ? new Phone("") : phone;
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
-
+        this.dateAdded = LocalDateTime.now();
         assert tags.size() <= 5;
         assert tags.stream().allMatch(tag -> tag.tagName.length() <= 20);
-
         this.tags.addAll(tags);
     }
 
@@ -80,6 +81,10 @@ public class Club implements Searchable {
 
     public Address getAddress() {
         return address;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
     }
 
     /**

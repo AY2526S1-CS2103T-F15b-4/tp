@@ -208,6 +208,11 @@ public final class AddClubCommandTest {
         }
 
         @Override
+        public void undoSortFilteredPersonList() {
+
+        }
+
+        @Override
         public void addClub(Club c) {
             throw new AssertionError("This method should not be called.");
         }
@@ -259,6 +264,11 @@ public final class AddClubCommandTest {
 
         @Override
         public void sortFilteredClubList(Comparator<Club> clubComparator) {
+
+        }
+
+        @Override
+        public void undoSortFilteredClubList() {
 
         }
 

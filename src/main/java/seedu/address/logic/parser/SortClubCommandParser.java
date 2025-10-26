@@ -46,6 +46,7 @@ public class SortClubCommandParser implements Parser<SortClubCommand> {
         case "p/" -> c -> c.getPhone().toString();
         case "e/" -> c -> c.getEmail().toString();
         case "a/" -> c -> c.getAddress().toString();
+        case "d/" -> c -> c.getDateAdded().toString();
         default -> c -> "";
         };
     }

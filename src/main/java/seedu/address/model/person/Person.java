@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -36,9 +37,10 @@ public class Person implements Searchable {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final Address address;
 
     // Data fields
-    private final Address address;
+    private final LocalDateTime dateAdded;
     private final Set<Tag> tags = new HashSet<>();
     private final ObservableList<Membership> memberships = FXCollections.observableArrayList(MEMBERSHIP_EXTRACTOR);
 
@@ -65,6 +67,7 @@ public class Person implements Searchable {
         this.phone = (phone == null) ? new Phone("") : phone;
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
+        this.dateAdded = LocalDateTime.now();
         this.tags.addAll(tags);
     }
 
@@ -82,6 +85,10 @@ public class Person implements Searchable {
 
     public Address getAddress() {
         return address;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
     }
 
     public boolean phoneHasNonNumericNonSpaceCharacter() {
