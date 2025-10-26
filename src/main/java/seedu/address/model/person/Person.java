@@ -65,6 +65,9 @@ public class Person implements Searchable {
         this.phone = (phone == null) ? new Phone("") : phone;
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
+
+        assert tags.size() <= 5;
+        assert tags.stream().allMatch(tag -> tag.tagName.length() <= 20);
         this.tags.addAll(tags);
     }
 
@@ -123,7 +126,7 @@ public class Person implements Searchable {
             return false;
         }
 
-        return otherPerson.getEmail().equals(getEmail());
+        return this.email.value.equalsIgnoreCase(otherPerson.email.value);
     }
 
     /**
