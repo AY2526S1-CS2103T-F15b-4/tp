@@ -101,11 +101,11 @@ public class AddressBookParser {
         case FindPersonCommand.COMMAND_WORD:
             return new FindPersonCommandParser().parse(arguments);
 
-        case FilterClubCommand.COMMAND_WORD:
-            return new FilterClubCommandParser().parse(arguments);
-
         case FilterPersonCommand.COMMAND_WORD:
             return new FilterPersonCommandParser().parse(arguments);
+
+        case FilterClubCommand.COMMAND_WORD:
+            return new FilterClubCommandParser().parse(arguments);
 
         case ListAllCommand.COMMAND_WORD:
             return new ListAllCommand();

@@ -239,13 +239,13 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void restorePerson() {
-        addPerson(deletedPerson);
+    public void removeLastAddedClub() {
+        deleteClub(lastAddedClub);
     }
 
     @Override
-    public void removeLastAddedClub() {
-        deleteClub(lastAddedClub);
+    public void restorePerson() {
+        addPerson(deletedPerson);
     }
 
     @Override
