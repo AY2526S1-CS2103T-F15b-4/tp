@@ -65,10 +65,6 @@ public class Person implements Searchable {
         this.phone = (phone == null) ? new Phone("") : phone;
         this.email = email;
         this.address = (address == null) ? new Address("") : address;
-
-        assert tags.size() <= 5;
-        assert tags.stream().allMatch(tag -> tag.tagName.length() <= 20);
-
         this.tags.addAll(tags);
     }
 
@@ -127,7 +123,7 @@ public class Person implements Searchable {
             return false;
         }
 
-        return this.email.value.equalsIgnoreCase(otherPerson.email.value);
+        return otherPerson.getEmail().equals(getEmail());
     }
 
     /**
@@ -155,6 +151,7 @@ public class Person implements Searchable {
 
     @Override
     public int hashCode() {
+        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, address, tags);
     }
 

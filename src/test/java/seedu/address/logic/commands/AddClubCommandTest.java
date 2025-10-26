@@ -157,6 +157,41 @@ public final class AddClubCommandTest {
         }
 
         @Override
+        public void restoreAddressBook() {
+
+        }
+
+        @Override
+        public void restorePerson() {
+
+        }
+
+        @Override
+        public void restoreClub() {
+
+        }
+
+        @Override
+        public void removeLastAddedPerson() {
+
+        }
+
+        @Override
+        public void removeLastAddedClub() {
+
+        }
+
+        @Override
+        public void revertEditedPerson() {
+
+        }
+
+        @Override
+        public void revertEditedClub() {
+
+        }
+
+        @Override
         public ObservableList<Person> getFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
         }

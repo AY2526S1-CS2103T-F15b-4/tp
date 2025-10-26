@@ -226,5 +226,4 @@ public class Club implements Searchable {
                 .add("tags", tags)
                 .toString();
     }
-
 }

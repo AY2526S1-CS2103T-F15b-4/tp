@@ -152,6 +152,41 @@ public class AddPersonCommandTest {
         }
 
         @Override
+        public void restoreAddressBook() {
+
+        }
+
+        @Override
+        public void restorePerson() {
+
+        }
+
+        @Override
+        public void restoreClub() {
+
+        }
+
+        @Override
+        public void removeLastAddedPerson() {
+
+        }
+
+        @Override
+        public void removeLastAddedClub() {
+
+        }
+
+        @Override
+        public void revertEditedPerson() {
+
+        }
+
+        @Override
+        public void revertEditedClub() {
+
+        }
+
+        @Override
         public void setClub(Club target, Club editedPerson) {
             throw new AssertionError("This method should not be called.");
         }
